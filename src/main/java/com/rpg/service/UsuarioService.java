@@ -37,7 +37,8 @@ public class UsuarioService {
     }
 
     public Usuario salvar(Usuario obj) {
-        if (obj.getSenha() != null) {
+        if (obj.getSenha() != null && !obj.getSenha().startsWith("$2a$")) {
+            // só criptografa se já não estiver criptografada
             String senhaCriptografada = passwordEncoder.encode(obj.getSenha());
             obj.setSenha(senhaCriptografada);
         }
@@ -51,11 +52,6 @@ public class UsuarioService {
 
     public void deletar(Long id) {
         repository.deleteById(id);
-    }
-
-    public Optional<Usuario> autenticar(String email, String senhaDigitada) {
-        return repository.findByEmail(email)
-                .filter(usuario -> passwordEncoder.matches(senhaDigitada, usuario.getSenha()));
     }
 
     public Optional<Usuario> buscarPorEmail(String email) {

@@ -1,6 +1,8 @@
 package com.rpg.controller;
 
 import com.rpg.dto.*;
+import com.rpg.entity.Perfil;
+import com.rpg.entity.Sexo;
 import com.rpg.entity.Usuario;
 import com.rpg.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -38,17 +40,24 @@ public class UsuarioController {
         return ResponseEntity.ok(new ResponseDTO<>(201, "Usuário criado com sucesso", service.toDTO(salvo)));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @RequestBody Usuario obj) {
-        return service.buscarPorIdDTO(id)
-                .map(existing -> {
-                    obj.setIdUsuario(id);
-                    return ResponseEntity.ok(service.salvar(obj));
+    @PutMapping("/atualizar/{email}")
+    public ResponseEntity<?> atualizarPorEmail(@PathVariable String email, @RequestBody UsuarioUpdateDTO dto) {
+        System.out.println("AOOOBAAA");
+        return service.buscarPorEmail(email)
+                .map(usuario -> {
+                    if (dto.getNome() != null) usuario.setNome(dto.getNome());
+                    if (dto.getNickname() != null) usuario.setNickname(dto.getNickname());
+                    if (dto.getSenha() != null) usuario.setSenha(dto.getSenha());
+                    if (dto.getIdSexo() != null) usuario.setSexo(new Sexo(dto.getIdSexo()));
+                    if (dto.getIdPerfil() != null) usuario.setPerfil(new Perfil(dto.getIdPerfil()));
+
+                    Usuario atualizado = service.salvar(usuario);
+                    return ResponseEntity.ok(new ResponseDTO<>(200, "Usuário atualizado com sucesso", service.toDTO(atualizado)));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         if (service.buscarPorIdDTO(id).isPresent()) {
             service.deletar(id);
