@@ -14,4 +14,8 @@ public class Perfil {
 
     private String nome;
     private String descricao;
+
+    public Perfil(Long idPerfil) {
+        this.idPerfil = idPerfil;
+    }
 }

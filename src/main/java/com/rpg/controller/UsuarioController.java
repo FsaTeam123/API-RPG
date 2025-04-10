@@ -1,7 +1,9 @@
 package com.rpg.controller;
 
+import com.rpg.dto.*;
 import com.rpg.entity.Usuario;
 import com.rpg.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,25 +20,27 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public List<Usuario> listarTodos() {
-        return service.listarTodos();
+    public List<UsuarioDTO> listarTodos() {
+        return service.listarTodosDTO();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
-        return service.buscarPorId(id)
+    public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Long id) {
+        return service.buscarPorIdDTO(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Usuario criar(@RequestBody Usuario obj) {
-        return service.salvar(obj);
+    public ResponseEntity<ResponseDTO<UsuarioDTO>> criar(@RequestBody @Valid UsuarioCreateDTO dto) {
+        Usuario usuario = service.fromDTO(dto);
+        Usuario salvo = service.salvar(usuario);
+        return ResponseEntity.ok(new ResponseDTO<>(201, "Usuário criado com sucesso", service.toDTO(salvo)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @RequestBody Usuario obj) {
-        return service.buscarPorId(id)
+        return service.buscarPorIdDTO(id)
                 .map(existing -> {
                     obj.setIdUsuario(id);
                     return ResponseEntity.ok(service.salvar(obj));
@@ -46,7 +50,7 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        if (service.buscarPorId(id).isPresent()) {
+        if (service.buscarPorIdDTO(id).isPresent()) {
             service.deletar(id);
             return ResponseEntity.ok().build();
         }
