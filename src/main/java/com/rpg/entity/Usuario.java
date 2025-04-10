@@ -22,7 +22,10 @@ public class Usuario {
     private Sexo sexo;
 
     private String senha;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
 
     @ManyToOne
     @JoinColumn(name = "idPerfil")

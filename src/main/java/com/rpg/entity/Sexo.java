@@ -13,4 +13,8 @@ public class Sexo {
     private Long idSexo;
 
     private String nome;
+
+    public Sexo(Long idSexo) {
+        this.idSexo = idSexo;
+    }
 }
