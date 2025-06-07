@@ -1,4 +1,4 @@
-package com.rpg.entity;
+package com.rpg.core.model;
 
 import jakarta.persistence.*;
 import lombok.*;

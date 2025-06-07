@@ -1,7 +1,7 @@
-package com.rpg.service;
+package com.rpg.core.service;
 
-import com.rpg.entity.Usuario;
-import com.rpg.repository.UsuarioRepository;
+import com.rpg.core.model.Usuario;
+import com.rpg.adapter.out.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

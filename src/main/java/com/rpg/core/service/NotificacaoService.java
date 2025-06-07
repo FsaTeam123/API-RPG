@@ -1,7 +1,7 @@
-package com.rpg.service;
+package com.rpg.core.service;
 
-import com.rpg.entity.Notificacao;
-import com.rpg.repository.NotificacaoRepository;
+import com.rpg.core.model.Notificacao;
+import com.rpg.adapter.out.NotificacaoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

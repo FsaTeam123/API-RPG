@@ -1,7 +1,7 @@
-package com.rpg.service;
+package com.rpg.core.service;
 
-import com.rpg.entity.Perfil;
-import com.rpg.repository.PerfilRepository;
+import com.rpg.core.model.Perfil;
+import com.rpg.adapter.out.PerfilRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

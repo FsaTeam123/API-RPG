@@ -1,4 +1,4 @@
-package com.rpg.controller;
+package com.rpg.adapter.in;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

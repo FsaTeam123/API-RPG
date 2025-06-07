@@ -1,49 +1,55 @@
-package com.rpg.controller;
+package com.rpg.adapter.in;
 
-import com.rpg.entity.Notificacao;
-import com.rpg.service.NotificacaoService;
+import com.rpg.core.model.Usuario;
+import com.rpg.core.service.UsuarioService;
+import com.rpg.port.input.UsuarioControllerInterface;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/notificacaos")
-public class NotificacaoController {
+@RequestMapping("/usuarios")
+public class UsuarioController implements UsuarioControllerInterface {
 
-    private final NotificacaoService service;
+    private final UsuarioService service;
 
-    public NotificacaoController(NotificacaoService service) {
+    public UsuarioController(UsuarioService service) {
         this.service = service;
     }
 
+    @Override
     @GetMapping
-    public List<Notificacao> listarTodos() {
+    public List<Usuario> listarTodos() {
         return service.listarTodos();
     }
 
+    @Override
     @GetMapping("/{id}")
-    public ResponseEntity<Notificacao> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Override
     @PostMapping
-    public Notificacao criar(@RequestBody Notificacao obj) {
+    public Usuario criar(@RequestBody Usuario obj) {
         return service.salvar(obj);
     }
 
+    @Override
     @PutMapping("/{id}")
-    public ResponseEntity<Notificacao> atualizar(@PathVariable Long id, @RequestBody Notificacao obj) {
+    public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @RequestBody Usuario obj) {
         return service.buscarPorId(id)
                 .map(existing -> {
-                    obj.setIdNotificacao(id);
+                    obj.setIdUsuario(id);
                     return ResponseEntity.ok(service.salvar(obj));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         if (service.buscarPorId(id).isPresent()) {

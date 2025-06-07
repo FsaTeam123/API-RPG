@@ -1,7 +1,7 @@
-package com.rpg.service;
+package com.rpg.core.service;
 
-import com.rpg.entity.Sexo;
-import com.rpg.repository.SexoRepository;
+import com.rpg.core.model.Sexo;
+import com.rpg.adapter.out.SexoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
