@@ -1,28 +1,28 @@
 package com.rpg.adapter.out;
 
-import com.rpg.core.model.Perfil;
-import com.rpg.port.output.PerfilRepositoryInterface;
+import com.rpg.core.model.GeracaoMundo;
+import com.rpg.port.output.GeracaoMundoRepositoryInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface PerfilRepository extends JpaRepository<Perfil, Long>, PerfilRepositoryInterface {
+public interface GeracaoMundoRepository extends JpaRepository<GeracaoMundo, Long>, GeracaoMundoRepositoryInterface {
 
     @Override
-    default List<Perfil> listarTodos() {
+    default List<GeracaoMundo> listarTodos() {
         return findAll();
     }
 
     @Override
-    default Optional<Perfil> buscarPorId(Long id) {
+    default Optional<GeracaoMundo> buscarPorId(Long id) {
         return findById(id);
     }
 
     @Override
-    default Perfil salvar(Perfil obj) {
+    default GeracaoMundo salvar(GeracaoMundo obj) {
         return save(obj);
     }
 
