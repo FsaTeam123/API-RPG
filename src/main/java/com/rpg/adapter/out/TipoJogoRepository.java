@@ -1,28 +1,28 @@
 package com.rpg.adapter.out;
 
-import com.rpg.core.model.Perfil;
-import com.rpg.port.output.PerfilRepositoryInterface;
+import com.rpg.core.model.TipoJogo;
+import com.rpg.port.output.TipoJogoRepositoryInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface PerfilRepository extends JpaRepository<Perfil, Long>, PerfilRepositoryInterface {
+public interface TipoJogoRepository extends JpaRepository<TipoJogo, Long>, TipoJogoRepositoryInterface {
 
     @Override
-    default List<Perfil> listarTodos() {
+    default List<TipoJogo> listarTodos() {
         return findAll();
     }
 
     @Override
-    default Optional<Perfil> buscarPorId(Long id) {
+    default Optional<TipoJogo> buscarPorId(Long id) {
         return findById(id);
     }
 
     @Override
-    default Perfil salvar(Perfil obj) {
+    default TipoJogo salvar(TipoJogo obj) {
         return save(obj);
     }
 
