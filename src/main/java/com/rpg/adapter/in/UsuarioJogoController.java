@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/usuario-jogo")
+@RequestMapping("/usuario-jogo")
 public class UsuarioJogoController implements  UsuarioJogoControllerInterface {
 
     private final UsuarioJogoService service;

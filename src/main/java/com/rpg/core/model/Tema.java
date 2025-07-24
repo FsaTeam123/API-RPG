@@ -15,6 +15,7 @@ public class Tema {
 
     private String nome;
     private String descricao;
+    private Integer ativo;
 
     public Tema(Long idTema) {
         this.idTema = idTema;

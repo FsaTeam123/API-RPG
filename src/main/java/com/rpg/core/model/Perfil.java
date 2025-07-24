@@ -14,6 +14,7 @@ public class Perfil {
 
     private String nome;
     private String descricao;
+    private Integer ativo;
 
     public Perfil(Long idPerfil) {
         this.idPerfil = idPerfil;

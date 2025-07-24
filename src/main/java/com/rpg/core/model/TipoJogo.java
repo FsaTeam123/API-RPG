@@ -14,6 +14,7 @@ public class TipoJogo {
     private Long idTipoJogo;
 
     private String nome;
+    private Integer ativo;
 
     public TipoJogo(Long idTipoJogo) {
         this.idTipoJogo = idTipoJogo;
