@@ -54,6 +54,8 @@ public class Jogo {
     @Column(name = "DTC_CRIACAO")
     private LocalDateTime dataCriacao;
 
+    private Integer ativo;
+
     public Jogo(Long idJogo) {
         this.idJogo = idJogo;
     }

@@ -15,6 +15,7 @@ public class EstiloCampanha {
 
     private String nome;
     private String descricao;
+    private Integer ativo;
 
     public EstiloCampanha(Long idEstiloCampanha) {
         this.idEstiloCampanha = idEstiloCampanha;

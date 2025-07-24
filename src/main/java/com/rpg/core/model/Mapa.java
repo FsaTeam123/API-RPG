@@ -21,6 +21,7 @@ public class Mapa {
     private String descricao;
     private String nome;
     private Integer grid;
+    private Integer ativo;
 
     @Lob
     private byte[] imagem;

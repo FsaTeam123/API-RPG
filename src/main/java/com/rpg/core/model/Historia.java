@@ -15,6 +15,7 @@ public class Historia {
 
     private String nome;
     private String descricao;
+    private Integer ativo;
 
     public Historia(Long idHistoria) {
         this.idHistoria = idHistoria;

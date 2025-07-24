@@ -13,6 +13,7 @@ public class Sexo {
     private Long idSexo;
 
     private String nome;
+    private Integer ativo;
 
     public Sexo(Long idSexo) {
         this.idSexo = idSexo;

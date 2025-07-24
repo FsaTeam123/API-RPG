@@ -32,4 +32,6 @@ public class Usuario {
     private Perfil perfil;
 
     private LocalDateTime dtcCriacao;
+
+    private Integer ativo;
 }

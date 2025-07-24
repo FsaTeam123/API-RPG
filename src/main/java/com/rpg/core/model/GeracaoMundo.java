@@ -15,6 +15,7 @@ public class GeracaoMundo {
 
     private String nome;
     private String descricao;
+    private Integer ativo;
 
     public GeracaoMundo(Long idGeracaoMundo) {
         this.idGeracaoMundo = idGeracaoMundo;
