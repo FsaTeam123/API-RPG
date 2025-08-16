@@ -15,4 +15,5 @@ public class UsuarioDTO {
     private Sexo sexo;
     private Perfil perfil;
     private LocalDateTime dtcCriacao;
+    private Integer ativo;
 }
