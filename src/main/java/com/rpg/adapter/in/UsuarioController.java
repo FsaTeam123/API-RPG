@@ -37,6 +37,22 @@ public class UsuarioController implements UsuarioControllerInterface {
     }
 
     @Override
+    @GetMapping("{email:.+}")
+    public ResponseEntity<UsuarioDTO> buscarPorEmail(@PathVariable String email) {
+        return service.buscarPorEmail(email).map(this::toDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Override
+    @GetMapping("/reset/{email:.+}")
+    public ResponseEntity<UsuarioDTO> buscarPorEmailComReset(@PathVariable String email) {
+        return service.buscarPorEmailComReset(email).map(this::toDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Override
     @PostMapping
     public ResponseEntity<ResponseDTO<UsuarioDTO>> criar(@RequestBody @Valid UsuarioCreateDTO dto) {
         Usuario usuario = service.fromDTO(dto);
@@ -54,6 +70,7 @@ public class UsuarioController implements UsuarioControllerInterface {
                     if (dto.getSenha() != null) usuario.setSenha(dto.getSenha());
                     if (dto.getIdSexo() != null) usuario.setSexo(new Sexo(dto.getIdSexo()));
                     if (dto.getIdPerfil() != null) usuario.setPerfil(new Perfil(dto.getIdPerfil()));
+                    if (dto.getAtivo() != null) usuario.setAtivo(dto.getAtivo());
 
                     Usuario atualizado = service.salvar(usuario);
                     return ResponseEntity.ok(new ResponseDTO<>(200, "Usuário atualizado com sucesso", service.toDTO(atualizado)));
@@ -70,4 +87,17 @@ public class UsuarioController implements UsuarioControllerInterface {
         }
         return ResponseEntity.notFound().build();
     }
+    public UsuarioDTO toDTO(Usuario usuario) {
+        return new UsuarioDTO(
+                usuario.getIdUsuario(),
+                usuario.getNome(),
+                usuario.getNickname(),
+                usuario.getEmail(),
+                usuario.getSexo(),
+                usuario.getPerfil(),
+                usuario.getDtcCriacao(),
+                usuario.getAtivo()
+        );
+    }
+
 }

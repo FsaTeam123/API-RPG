@@ -11,4 +11,5 @@ public class UsuarioUpdateDTO {
     private String senha;
     private Long idSexo;
     private Long idPerfil;
+    private Integer ativo;
 }

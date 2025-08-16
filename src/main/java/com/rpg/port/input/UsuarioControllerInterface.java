@@ -19,4 +19,7 @@ public interface UsuarioControllerInterface {
     ResponseEntity<?> atualizarPorEmail(String email, UsuarioUpdateDTO dto);
 
     ResponseEntity<Void> deletar(Long id);
+
+    ResponseEntity<UsuarioDTO> buscarPorEmail(String email);
+    ResponseEntity<UsuarioDTO> buscarPorEmailComReset(String email);
 }
