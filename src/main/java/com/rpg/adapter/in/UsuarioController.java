@@ -6,11 +6,21 @@ import com.rpg.adapter.out.dto.UsuarioUpdateDTO;
 import com.rpg.core.model.*;
 import com.rpg.core.service.UsuarioService;
 import com.rpg.port.input.UsuarioControllerInterface;
+import org.springframework.core.io.Resource;
 import jakarta.validation.Valid;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -37,7 +47,7 @@ public class UsuarioController implements UsuarioControllerInterface {
     }
 
     @Override
-    @GetMapping("{email:.+}")
+    @GetMapping("/email/{email:.+}")
     public ResponseEntity<UsuarioDTO> buscarPorEmail(@PathVariable String email) {
         return service.buscarPorEmail(email).map(this::toDTO)
                 .map(ResponseEntity::ok)
@@ -100,4 +110,56 @@ public class UsuarioController implements UsuarioControllerInterface {
         );
     }
 
+    // >>>>>>>>>> GET da foto (pega do banco) <<<<<<<<<<
+    @GetMapping("/{id}/foto")
+    public ResponseEntity<Resource> baixarFoto(@PathVariable Long id) {
+        Optional<FotoUsuario> opt = service.obterFotoUsuario(id);
+        if (opt.isEmpty() || opt.get().getDados() == null) return ResponseEntity.notFound().build();
+
+        FotoUsuario foto = opt.get();
+        MediaType mediaType = MediaType.APPLICATION_OCTET_STREAM;
+        try {
+            if (foto.getContentType() != null) {
+                mediaType = MediaType.parseMediaType(foto.getContentType());
+            }
+        } catch (Exception ignored) {}
+
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .contentLength(foto.getTamanhoBytes() == null ? foto.getDados().length : foto.getTamanhoBytes())
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.inline()
+                                .filename(foto.getNomeArquivo() == null ? ("usuario_" + id) : foto.getNomeArquivo())
+                                .build().toString())
+                .body(new ByteArrayResource(foto.getDados()));
+    }
+
+    // >>>>>>>>>> POST da foto (salva no banco) <<<<<<<<<<
+    @PostMapping(path = "/{id}/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ResponseDTO<String>> uploadFoto(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file) throws IOException {
+
+        Optional<Usuario> opt = service.buscarEntidadePorId(id);
+        if (opt.isEmpty()) {
+            return ResponseEntity.status(404)
+                    .body(new ResponseDTO<>(404, "Usuário não encontrado", null));
+        }
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new ResponseDTO<>(400, "Arquivo vazio", null));
+        }
+
+        byte[] dados = file.getBytes();
+        String contentType = Objects.requireNonNullElse(file.getContentType(), MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        String nomeArquivo = Objects.requireNonNullElse(file.getOriginalFilename(), "foto");
+
+        service.salvarFotoUsuario(opt.get(), dados, contentType, nomeArquivo);
+
+        String fotoUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/usuarios/").path(String.valueOf(id)).path("/foto")
+                .toUriString();
+
+        return ResponseEntity.ok(new ResponseDTO<>(200, "Foto salva com sucesso", fotoUrl));
+    }
 }

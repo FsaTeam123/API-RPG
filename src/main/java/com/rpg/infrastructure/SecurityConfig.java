@@ -1,10 +1,13 @@
+// com.rpg.infrastructure.SecurityConfig
 package com.rpg.infrastructure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 public class SecurityConfig {
@@ -18,13 +21,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors(Customizer.withDefaults())              // ⬅️ habilita CORS no Security
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        //.requestMatchers("/auth/login", "/usuarios").permitAll()
-                        //.requestMatchers("/admin/**").hasRole("ADMIN")
-                        //.requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                        //.anyRequest().authenticated()
-                        .anyRequest().permitAll()  // libera tudo
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // ⬅️ libera preflight
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(login -> login.disable())
