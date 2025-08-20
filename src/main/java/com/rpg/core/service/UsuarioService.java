@@ -1,12 +1,9 @@
 package com.rpg.core.service;
 
 import com.rpg.adapter.in.dto.UsuarioCreateDTO;
+import com.rpg.adapter.out.*;
 import com.rpg.infrastructure.EmailApiClient;
-import com.rpg.adapter.out.CodigoVerificacaoRepository;
 import com.rpg.core.model.*;
-import com.rpg.adapter.out.UsuarioRepository;
-import com.rpg.adapter.out.SexoRepository;
-import com.rpg.adapter.out.PerfilRepository;
 import com.rpg.infrastructure.EmailTemplates;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +22,7 @@ public class UsuarioService {
 
     private final UsuarioRepository repository;
     private final CodigoVerificacaoRepository codigoRepository;
+    private final FotoUsuarioRepository fotoRepository;
     private final PasswordEncoder passwordEncoder;
     private final SexoRepository sexoRepository;
     private final PerfilRepository perfilRepository;
@@ -36,17 +34,25 @@ public class UsuarioService {
     private static final SecureRandom RNG = new SecureRandom();
 
 
-    public UsuarioService(UsuarioRepository repository, PasswordEncoder passwordEncoder,
-                          SexoRepository sexoRepository, PerfilRepository perfilRepository,
-                          CodigoVerificacaoRepository codigoRepository, EmailApiClient emailApiClient) {
+    public UsuarioService(UsuarioRepository repository,
+                          PasswordEncoder passwordEncoder,
+                          SexoRepository sexoRepository,
+                          PerfilRepository perfilRepository,
+                          CodigoVerificacaoRepository codigoRepository,
+                          EmailApiClient emailApiClient,
+                          FotoUsuarioRepository fotoRepository) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.sexoRepository = sexoRepository;
         this.perfilRepository = perfilRepository;
         this.codigoRepository = codigoRepository;
         this.emailApiClient = emailApiClient;
+        this.fotoRepository = fotoRepository;
     }
 
+    public Optional<Usuario> buscarEntidadePorId(Long id) {
+        return repository.findById(id);
+    }
 
     public List<UsuarioDTO> listarTodosDTO() {
         return repository.findAll()
@@ -170,5 +176,28 @@ public class UsuarioService {
     public boolean codigoValido(String email, String codigo) {
         int linhas = codigoRepository.consumirCodigo(email, codigo, Instant.now());
         return linhas > 0; // se consumiu (marcou usado=true), então era válido
+    }
+
+    @Transactional
+    public void salvarFotoUsuario(Usuario usuario, byte[] dados, String contentType, String nomeArquivo) {
+        FotoUsuario foto = fotoRepository.findById(usuario.getIdUsuario())
+                .orElseGet(() -> {
+                    FotoUsuario f = new FotoUsuario();
+                    f.setUsuario(usuario);   // @MapsId cuida do id
+                    return f;
+                });
+
+        foto.setDados(dados);
+        foto.setContentType(contentType);
+        foto.setNomeArquivo(nomeArquivo);
+        foto.setTamanhoBytes((long) dados.length);
+        foto.setAtualizadoEm(LocalDateTime.now());
+
+        fotoRepository.save(foto); // INSERT se novo, UPDATE se já existir
+    }
+
+    @Transactional
+    public Optional<FotoUsuario> obterFotoUsuario(Long idUsuario) {
+        return fotoRepository.findById(idUsuario);
     }
 }

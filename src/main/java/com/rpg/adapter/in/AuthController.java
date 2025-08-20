@@ -9,6 +9,7 @@ import com.rpg.core.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +40,22 @@ public class AuthController {
 
                         String token = jwtUtil.generateToken(claims);
 
-                        LoginResponse response = new LoginResponse(usuario, token, "Success");
+                        // monta a fotoUrl se existir foto salva no banco
+                        String fotoUrl = null;
+                        if (service.obterFotoUsuario(usuario.getIdUsuario())
+                                .map(f -> f.getDados() != null).orElse(false)) {
+                            fotoUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                                    .path("/usuarios/")
+                                    .path(String.valueOf(usuario.getIdUsuario()))
+                                    .path("/foto")
+                                    .toUriString();
+                        }
+
+                        if (usuario.getAtivo().equals(0)) {
+                            return ResponseEntity.status(401).body(new ResponseDTO<>(401, "Usuário Inativo", null));
+                        }
+
+                        LoginResponse response = new LoginResponse(usuario, token, "Success", fotoUrl);
                         return ResponseEntity.ok(new ResponseDTO<>(200, "Login realizado com sucesso", response));
                     } else {
                         return ResponseEntity.status(401).body(new ResponseDTO<>(401, "Senha inválida", null));

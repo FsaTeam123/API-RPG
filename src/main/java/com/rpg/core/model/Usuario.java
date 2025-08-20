@@ -26,12 +26,11 @@ public class Usuario {
     @Column(unique = true, nullable = false)
     private String email;
 
-
     @ManyToOne
     @JoinColumn(name = "idPerfil")
     private Perfil perfil;
 
     private LocalDateTime dtcCriacao;
 
-    private Integer ativo;
+    private Integer ativo = 1;
 }
