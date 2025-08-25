@@ -7,9 +7,9 @@ import com.rpg.adapter.out.dto.LoginResponse;
 import com.rpg.adapter.out.dto.ResponseDTO;
 import com.rpg.core.service.UsuarioService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +20,9 @@ public class AuthController {
 
     private final UsuarioService service;
     private final JwtUtil jwtUtil;
+
+    @Value("${app.external-base-url}")
+    private String externalBaseUrl;
 
     public AuthController(UsuarioService service, JwtUtil jwtUtil) {
         this.service = service;
@@ -44,11 +47,7 @@ public class AuthController {
                         String fotoUrl = null;
                         if (service.obterFotoUsuario(usuario.getIdUsuario())
                                 .map(f -> f.getDados() != null).orElse(false)) {
-                            fotoUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                                    .path("/usuarios/")
-                                    .path(String.valueOf(usuario.getIdUsuario()))
-                                    .path("/foto")
-                                    .toUriString();
+                            fotoUrl = externalBaseUrl + "/usuarios/" + usuario.getIdUsuario() + "/foto";
                         }
 
                         if (usuario.getAtivo().equals(0)) {
