@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           source: "${{ steps.jar.outputs.JAR_PATH }}"
-          target: "/tmp/app.jar"
+          target: "/tmp"   # <- DESTINO É A PASTA /tmp
 
       - name: Rodar deploy na EC2 (via SSH)
         uses: appleboy/ssh-action@v1.0.3
@@ -39,5 +39,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             set -e
+            REMOTE_JAR="/tmp/$(basename '${{ steps.jar.outputs.JAR_PATH }}')"
+            echo "Deployando JAR em: $REMOTE_JAR"
             HEALTH_URL="http://127.0.0.1:8085/actuator/health" KEEP_RELEASES=5 \
-              /opt/minha-api/deploy.sh /tmp/app.jar
+              /opt/minha-api/deploy.sh "$REMOTE_JAR"
