@@ -27,11 +27,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults())   // usa o bean abaixo
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // preflight
-                        // libere explicitamente o que for público:
+                        // ✅ liberar health/info do Actuator (usado no deploy)
+                        .requestMatchers("/actuator/health", "/actuator/health/**", "/actuator/info").permitAll()
+                        // suas rotas públicas
                         .requestMatchers("/auth/**", "/sexos", "/usuarios", "/usuarios/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -45,16 +47,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cors = new CorsConfiguration();
-        // Adicione TODAS as origens que vão acessar sua API:
         cors.setAllowedOrigins(List.of(
                 "https://main.d3r5mqem6d9ler.amplifyapp.com"
-                // se tiver domínio próprio do front, adicione aqui também
-                // "https://app.seu-dominio.com"
         ));
         cors.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
         cors.setAllowedHeaders(List.of("Content-Type","Authorization","Origin","Accept","X-Requested-With"));
         cors.setExposedHeaders(List.of("Content-Length","Content-Type"));
-        cors.setAllowCredentials(false); // deixe false a menos que use withCredentials/cookies
+        cors.setAllowCredentials(false);
         cors.setMaxAge(86400L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
