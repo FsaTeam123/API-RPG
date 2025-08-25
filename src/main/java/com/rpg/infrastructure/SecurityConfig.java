@@ -33,6 +33,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // preflight
                         // ✅ liberar health/info do Actuator (usado no deploy)
                         .requestMatchers("/actuator/health", "/actuator/health/**", "/actuator/info").permitAll()
+                        // 🔓 SWAGGER / OPENAPI
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**"
+                        ).permitAll()
                         // suas rotas públicas
                         .requestMatchers("/auth/**", "/sexos", "/usuarios", "/usuarios/**").permitAll()
                         .anyRequest().authenticated()

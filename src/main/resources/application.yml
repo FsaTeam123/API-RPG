@@ -1,5 +1,0 @@
-mail:
-  api:
-    base-url: http://15.228.149.190:8080
-  app:
-    external-base-url: https://t7tsd4gbsd.execute-api.sa-east-1.amazonaws.com
