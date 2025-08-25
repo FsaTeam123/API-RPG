@@ -6,6 +6,7 @@ import com.rpg.adapter.out.dto.UsuarioUpdateDTO;
 import com.rpg.core.model.*;
 import com.rpg.core.service.UsuarioService;
 import com.rpg.port.input.UsuarioControllerInterface;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import jakarta.validation.Valid;
 import org.springframework.core.io.ByteArrayResource;
@@ -27,6 +28,9 @@ import java.util.Optional;
 public class UsuarioController implements UsuarioControllerInterface {
 
     private final UsuarioService service;
+
+    @Value("${app.external-base-url}")
+    private String externalBaseUrl;
 
     public UsuarioController(UsuarioService service) {
         this.service = service;
@@ -156,9 +160,7 @@ public class UsuarioController implements UsuarioControllerInterface {
 
         service.salvarFotoUsuario(opt.get(), dados, contentType, nomeArquivo);
 
-        String fotoUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/usuarios/").path(String.valueOf(id)).path("/foto")
-                .toUriString();
+        String fotoUrl = externalBaseUrl + "/usuarios/" + id + "/foto";
 
         return ResponseEntity.ok(new ResponseDTO<>(200, "Foto salva com sucesso", fotoUrl));
     }
