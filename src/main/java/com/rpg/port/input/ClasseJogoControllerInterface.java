@@ -1,5 +1,6 @@
 package com.rpg.port.input;
 
+import com.rpg.adapter.in.dto.ClasseJogoCreateDTO;
 import com.rpg.core.model.ClasseJogo;
 import com.rpg.core.model.ClasseJogoId;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,6 @@ import java.util.List;
 public interface ClasseJogoControllerInterface {
     List<ClasseJogo> listarTodos();
     ResponseEntity<ClasseJogo> buscarPorId(Long idClasse, Long idJogo);
-    ClasseJogo criar(ClasseJogo obj);
+    ResponseEntity<ClasseJogo> criar(ClasseJogoCreateDTO obj);
     ResponseEntity<Void> deletar(Long idClasse, Long idJogo);
 }

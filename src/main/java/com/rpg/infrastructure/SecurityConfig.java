@@ -40,7 +40,12 @@ public class SecurityConfig {
                                 "/swagger-ui/**"
                         ).permitAll()
                         // suas rotas públicas
-                        .requestMatchers("/auth/**", "/sexos", "/usuarios", "/usuarios/**").permitAll()
+                        .requestMatchers("/auth/**", "/sexos", "/sexos/**",
+                                "/usuarios", "/usuarios/**", "/classes", "/classes/**",
+                                "/jogos", "/jogos/**", "/classe-jogo", "/classe-jogo/**",
+                                "/geracoe-mundo", "/geracoe-mundo/**", "/estilos-campanha", "/estilos-campanha/**",
+                                "/historia", "/historia/**", "/temas", "/temas/**",
+                                "/jogos/user/mestrado", "/jogos/user/jogador").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
@@ -54,6 +59,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cors = new CorsConfiguration();
         cors.setAllowedOrigins(List.of(
+                "http://localhost:4200",
                 "https://main.d3r5mqem6d9ler.amplifyapp.com"
         ));
         cors.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
