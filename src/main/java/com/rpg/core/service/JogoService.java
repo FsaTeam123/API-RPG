@@ -31,4 +31,13 @@ public class JogoService {
     public void deletar(Long id) {
         repository.deletar(id);
     }
+
+    public List<Jogo> buscarPorIdMestre(Long id) {
+        return repository.buscarPorMestre(id);
+    }
+
+    public List<String> buscarPorIdJogador(Long id) {
+        return repository.buscarPorJogador(id);
+    }
 }
+

@@ -1,6 +1,7 @@
 package com.rpg.port.output;
 
 import com.rpg.core.model.Jogo;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +15,8 @@ public interface JogoRepositoryInterface {
     Jogo salvar(Jogo obj);
 
     void deletar(Long id);
+
+    List<Jogo> buscarPorMestre(Long id);
+
+    List<String> buscarPorJogador(@Param("usuarioId") Long usuarioId);
 }

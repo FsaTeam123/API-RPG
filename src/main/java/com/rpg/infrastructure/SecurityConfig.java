@@ -41,7 +41,11 @@ public class SecurityConfig {
                         ).permitAll()
                         // suas rotas públicas
                         .requestMatchers("/auth/**", "/sexos", "/sexos/**",
-                                "/usuarios", "/usuarios/**", "/classes", "/classes/**").permitAll()
+                                "/usuarios", "/usuarios/**", "/classes", "/classes/**",
+                                "/jogos", "/jogos/**", "/classe-jogo", "/classe-jogo/**",
+                                "/geracoe-mundo", "/geracoe-mundo/**", "/estilos-campanha", "/estilos-campanha/**",
+                                "/historia", "/historia/**", "/temas", "/temas/**",
+                                "/jogos/user/mestrado", "/jogos/user/jogador").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
