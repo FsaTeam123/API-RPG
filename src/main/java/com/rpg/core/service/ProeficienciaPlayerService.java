@@ -1,7 +1,7 @@
 package com.rpg.core.service;
 
 import com.rpg.adapter.out.ProeficienciaPlayerRepository;
-import com.rpg.core.model.ProeficienciaPlayer;
+import com.rpg.core.model.ProeficienciaClasse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,15 +16,15 @@ public class ProeficienciaPlayerService {
         this.repository = repository;
     }
 
-    public List<ProeficienciaPlayer> listarTodos() {
+    public List<ProeficienciaClasse> listarTodos() {
         return repository.listarTodos();
     }
 
-    public Optional<ProeficienciaPlayer> buscarPorId(Long id) {
+    public Optional<ProeficienciaClasse> buscarPorId(Long id) {
         return repository.buscarPorId(id);
     }
 
-    public ProeficienciaPlayer salvar(ProeficienciaPlayer obj) {
+    public ProeficienciaClasse salvar(ProeficienciaClasse obj) {
         return repository.salvar(obj);
     }
 

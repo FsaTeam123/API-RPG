@@ -2,6 +2,11 @@ package com.rpg.core.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -23,7 +28,7 @@ public class Classe {
     @Column(name = "PV_NIVEL", nullable = false)
     private Integer pvNivel;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_ATRIBUTO_PV", nullable = false)
     private Atributo atributoPV;
 
@@ -33,13 +38,37 @@ public class Classe {
     @Column(name = "PM_NIVEL", nullable = false)
     private Integer pmNivel;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_PROEFICIENCIA", nullable = false)
-    private Proeficiencia proeficiencia;
+    @OneToMany(mappedBy = "classe",
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE },
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<ProeficienciaClasse> proeficienciasClasse = new ArrayList<>();
+
+    @OneToMany(mappedBy = "classe",
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE },
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @ToString.Exclude @EqualsAndHashCode.Exclude
+    private List<PericiaClasse> periciasClasse = new ArrayList<>();
+
+    // ---- IMAGEM EM BYTEA ----
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "IMAGEM")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JdbcTypeCode(SqlTypes.BINARY)
+    private byte[] imagem;
+
+    @Column(name = "IMAGEM_CONTENT_TYPE", length = 100)
+    private String imagemContentType;
+
+    @Column(name = "IMAGEM_FILENAME", length = 255)
+    private String imagemFilename;
 
     private Integer ativo;
 
-    public Classe(Long idClasse) {
-        this.idClasse = idClasse;
-    }
+    public Classe(Long idClasse) { this.idClasse = idClasse; }
 }

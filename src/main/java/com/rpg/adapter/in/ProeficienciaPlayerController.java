@@ -1,6 +1,6 @@
 package com.rpg.adapter.in;
 
-import com.rpg.core.model.ProeficienciaPlayer;
+import com.rpg.core.model.ProeficienciaClasse;
 import com.rpg.core.service.ProeficienciaPlayerService;
 import com.rpg.port.input.ProeficienciaPlayerControllerInterface;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +20,13 @@ public class ProeficienciaPlayerController implements ProeficienciaPlayerControl
 
     @Override
     @GetMapping
-    public List<ProeficienciaPlayer> listarTodos() {
+    public List<ProeficienciaClasse> listarTodos() {
         return service.listarTodos();
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<ProeficienciaPlayer> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<ProeficienciaClasse> buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -34,13 +34,13 @@ public class ProeficienciaPlayerController implements ProeficienciaPlayerControl
 
     @Override
     @PostMapping
-    public ProeficienciaPlayer criar(@RequestBody ProeficienciaPlayer obj) {
+    public ProeficienciaClasse criar(@RequestBody ProeficienciaClasse obj) {
         return service.salvar(obj);
     }
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity<ProeficienciaPlayer> atualizar(@PathVariable Long id, @RequestBody ProeficienciaPlayer obj) {
+    public ResponseEntity<ProeficienciaClasse> atualizar(@PathVariable Long id, @RequestBody ProeficienciaClasse obj) {
         return service.buscarPorId(id)
                 .map(existing -> {
                     obj.setIdProeficienciaPlayer(id);

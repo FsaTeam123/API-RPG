@@ -7,22 +7,20 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProeficienciaPlayer {
+public class ProeficienciaClasse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_PROEFICIENCIA_PLAYER")
     private Long idProeficienciaPlayer;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_PLAYER", nullable = false)
-    private Player player;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_CLASSE", nullable = false) // padronize o nome
+    private Classe classe;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_PROEFICIENCIA", nullable = false)
     private Proeficiencia proeficiencia;
 
-    public ProeficienciaPlayer(Long idProeficienciaPlayer) {
-        this.idProeficienciaPlayer = idProeficienciaPlayer;
-    }
+    public ProeficienciaClasse(Long id) { this.idProeficienciaPlayer = id; }
 }

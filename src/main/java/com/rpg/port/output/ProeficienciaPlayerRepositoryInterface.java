@@ -1,13 +1,13 @@
 package com.rpg.port.output;
 
-import com.rpg.core.model.ProeficienciaPlayer;
+import com.rpg.core.model.ProeficienciaClasse;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ProeficienciaPlayerRepositoryInterface {
-    List<ProeficienciaPlayer> listarTodos();
-    Optional<ProeficienciaPlayer> buscarPorId(Long id);
-    ProeficienciaPlayer salvar(ProeficienciaPlayer obj);
+    List<ProeficienciaClasse> listarTodos();
+    Optional<ProeficienciaClasse> buscarPorId(Long id);
+    ProeficienciaClasse salvar(ProeficienciaClasse obj);
     void deletar(Long id);
 }
