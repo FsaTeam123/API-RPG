@@ -144,22 +144,58 @@ public class JogoController implements JogoControllerInterface {
             );
         }
 
-        return new JogoDTO(
+        TipoJogo tpJogo = new TipoJogo(
+                j.getTipoJogo().getIdTipoJogo(),
+                j.getTipoJogo().getNome(),
+                j.getTipoJogo().getAtivo()
+        );
+
+        GeracaoMundo geracaoMundo = new GeracaoMundo(
+                j.getGeracaoMundo().getIdGeracaoMundo(),
+                j.getGeracaoMundo().getNome(),
+                j.getGeracaoMundo().getDescricao(),
+                j.getGeracaoMundo().getAtivo()
+        );
+
+        EstiloCampanha estiloCampanha = new EstiloCampanha(
+                j.getEstiloCampanha().getIdEstiloCampanha(),
+                j.getEstiloCampanha().getNome(),
+                j.getEstiloCampanha().getDescricao(),
+                j.getEstiloCampanha().getAtivo()
+        );
+
+        Historia historia = new Historia(
+                j.getHistoria().getIdHistoria(),
+                j.getHistoria().getNome(),
+                j.getHistoria().getDescricao(),
+                j.getHistoria().getAtivo()
+        );
+
+        Tema tema = new Tema(
+                j.getTema().getIdTema(),
+                j.getTema().getNome(),
+                j.getTema().getDescricao(),
+                j.getTema().getAtivo()
+        );
+
+        JogoDTO jogo = new JogoDTO(
                 j.getIdJogo(),
                 masterDTO,
                 j.getTitulo(),
                 j.getQtdPessoas(),
                 j.getIsEspecificClass(),
                 j.getNivelInicial(),
-                j.getTipoJogo(),       // entidades já fetchadas
-                j.getGeracaoMundo(),
-                j.getEstiloCampanha(),
-                j.getHistoria(),
-                j.getTema(),
+                tpJogo,
+                geracaoMundo,
+                estiloCampanha,
+                historia,
+                tema,
                 j.getSenha(),
                 j.getDataCriacao(),
                 j.getAtivo()
         );
+
+        return jogo;
     }
 
     // Copia dados do DTO para a entidade usando apenas IDs nos relacionamentos
