@@ -33,4 +33,6 @@ public class Usuario {
     private LocalDateTime dtcCriacao;
 
     private Integer ativo = 1;
+
+    private Integer online = 0;
 }

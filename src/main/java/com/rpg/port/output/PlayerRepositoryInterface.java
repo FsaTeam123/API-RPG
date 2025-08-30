@@ -1,3 +1,4 @@
+// com/rpg/port/output/PlayerRepositoryInterface.java
 package com.rpg.port.output;
 
 import com.rpg.core.model.Player;
@@ -10,4 +11,10 @@ public interface PlayerRepositoryInterface {
     Optional<Player> buscarPorId(Long id);
     Player salvar(Player player);
     void deletar(Long id);
+
+    List<Player> listarPorJogo(Long idJogo);
+
+    // opcionais (para a versão otimizada)
+    default int updateFoto(Long id, byte[] foto, String mime, String nome, Long tam) { return 0; }
+    default int clearFoto(Long id) { return 0; }
 }

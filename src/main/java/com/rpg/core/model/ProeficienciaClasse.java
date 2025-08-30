@@ -1,5 +1,6 @@
 package com.rpg.core.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,8 +15,9 @@ public class ProeficienciaClasse {
     @Column(name = "ID_PROEFICIENCIA_PLAYER")
     private Long idProeficienciaPlayer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_CLASSE", nullable = false) // padronize o nome
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "ID_CLASSE", nullable = false)
+    @JsonBackReference("classe-proef")
     private Classe classe;
 
     @ManyToOne(fetch = FetchType.EAGER)

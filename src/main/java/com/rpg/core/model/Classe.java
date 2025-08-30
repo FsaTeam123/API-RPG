@@ -1,5 +1,6 @@
 package com.rpg.core.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -42,8 +43,8 @@ public class Classe {
             cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE },
             orphanRemoval = true,
             fetch = FetchType.LAZY)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
+    @ToString.Exclude @EqualsAndHashCode.Exclude
+    @JsonManagedReference("classe-proef")
     private List<ProeficienciaClasse> proeficienciasClasse = new ArrayList<>();
 
     @OneToMany(mappedBy = "classe",
@@ -51,6 +52,7 @@ public class Classe {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     @ToString.Exclude @EqualsAndHashCode.Exclude
+    @JsonManagedReference("classe-pericia")
     private List<PericiaClasse> periciasClasse = new ArrayList<>();
 
     // ---- IMAGEM EM BYTEA ----

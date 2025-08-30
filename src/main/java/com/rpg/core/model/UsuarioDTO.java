@@ -16,4 +16,5 @@ public class UsuarioDTO {
     private Perfil perfil;
     private LocalDateTime dtcCriacao;
     private Integer ativo;
+    private Integer online;
 }
