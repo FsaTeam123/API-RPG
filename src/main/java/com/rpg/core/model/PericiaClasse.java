@@ -1,5 +1,6 @@
 package com.rpg.core.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +17,7 @@ public class PericiaClasse {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_CLASSE", nullable = false)
+    @JsonBackReference("classe-pericia")
     private Classe classe;
 
     @ManyToOne(fetch = FetchType.EAGER)

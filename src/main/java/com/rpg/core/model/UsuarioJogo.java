@@ -11,13 +11,12 @@ import lombok.*;
 public class UsuarioJogo {
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_JOGO")
     private Jogo jogo;
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_USUARIO")
     private Usuario usuario;
-
 }

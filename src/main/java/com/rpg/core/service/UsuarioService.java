@@ -149,7 +149,8 @@ public class UsuarioService {
                 usuario.getSexo(),
                 usuario.getPerfil(),
                 usuario.getDtcCriacao(),
-                usuario.getAtivo()
+                usuario.getAtivo(),
+                usuario.getOnline()
         );
     }
 
