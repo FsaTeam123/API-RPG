@@ -46,7 +46,7 @@ public class SecurityConfig {
                                 "/geracoe-mundo", "/geracoe-mundo/**", "/estilos-campanha", "/estilos-campanha/**",
                                 "/historia", "/historia/**", "/temas", "/temas/**",
                                 "/jogos/user/mestrado", "/jogos/user/jogador",
-                                "/players", "/players/**").permitAll()
+                                "/players", "/players/**", "/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
