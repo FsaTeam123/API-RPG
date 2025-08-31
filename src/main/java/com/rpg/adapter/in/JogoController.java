@@ -140,7 +140,8 @@ public class JogoController implements JogoControllerInterface {
                     u.getSexo(),     // entidade Sexo (já carregada no loadGraph)
                     u.getPerfil(),   // entidade Perfil (já carregada)
                     u.getDtcCriacao(),
-                    u.getAtivo()
+                    u.getAtivo(),
+                    u.getOnline()
             );
         }
 

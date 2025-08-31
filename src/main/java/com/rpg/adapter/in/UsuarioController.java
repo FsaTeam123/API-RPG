@@ -110,7 +110,8 @@ public class UsuarioController implements UsuarioControllerInterface {
                 usuario.getSexo(),
                 usuario.getPerfil(),
                 usuario.getDtcCriacao(),
-                usuario.getAtivo()
+                usuario.getAtivo(),
+                usuario.getOnline()
         );
     }
 
