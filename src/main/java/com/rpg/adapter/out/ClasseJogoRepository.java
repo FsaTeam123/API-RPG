@@ -1,9 +1,13 @@
 package com.rpg.adapter.out;
 
+import com.rpg.core.model.Classe;
 import com.rpg.core.model.ClasseJogo;
 import com.rpg.core.model.ClasseJogoId;
+import com.rpg.core.model.Jogo;
 import com.rpg.port.output.ClasseJogoRepositoryInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,4 +35,8 @@ public interface ClasseJogoRepository extends JpaRepository<ClasseJogo, ClasseJo
     default void deletar(ClasseJogoId id) {
         deleteById(id);
     }
+
+    @Override
+    @Query("select cj.classe from ClasseJogo cj where cj.jogo.idJogo = :id")
+    List<Classe> buscarClassePorIdJogo(Long id);
 }

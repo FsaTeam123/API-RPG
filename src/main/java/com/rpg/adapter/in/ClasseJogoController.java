@@ -34,6 +34,13 @@ public class ClasseJogoController implements ClasseJogoControllerInterface {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Override
+    @GetMapping("/{idJogo}")
+    public List<Classe> buscarPorIdJogo(@PathVariable("idJogo") Long idJogo) {
+        List<Classe> list = service.buscarClassePorIdJogo(idJogo);
+        return list;
+    }
+
     // ⬇️ POST recebendo só os IDs
     @Override
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

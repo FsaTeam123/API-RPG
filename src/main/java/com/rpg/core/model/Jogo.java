@@ -56,6 +56,8 @@ public class Jogo {
 
     private Integer ativo;
 
+    private Integer playerAtivos;
+
     public Jogo(Long idJogo) {
         this.idJogo = idJogo;
     }

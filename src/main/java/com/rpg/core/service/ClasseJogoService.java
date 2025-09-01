@@ -1,6 +1,7 @@
 package com.rpg.core.service;
 
 import com.rpg.adapter.out.ClasseJogoRepository;
+import com.rpg.core.model.Classe;
 import com.rpg.core.model.ClasseJogo;
 import com.rpg.core.model.ClasseJogoId;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,10 @@ public class ClasseJogoService {
 
     public void deletar(ClasseJogoId id) {
         repository.deletar(id);
+    }
+
+    public List<Classe> buscarClassePorIdJogo(Long idJogo) {
+        List<Classe> list = repository.buscarClassePorIdJogo(idJogo);
+        return list;
     }
 }

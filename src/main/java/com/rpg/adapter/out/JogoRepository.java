@@ -32,11 +32,15 @@ public interface JogoRepository extends JpaRepository<Jogo, Long>, JogoRepositor
 
     @Override
     @Query(value = """
-        SELECT DISTINCT j.titulo
-        FROM public.usuario_jogo uj
-        INNER JOIN public.jogo j ON uj.id_jogo = j.id_jogo
-        WHERE uj.id_usuario = :usuarioId
-        ORDER BY j.titulo
+        select
+            jogo.*
+        from
+            player
+         	inner join jogo on jogo.id_jogo = player.id_jogo
+        where
+           	id_usuario = :usuarioId
+        order by
+           	titulo
     """, nativeQuery = true)
-    List<String> buscarPorJogador(@Param("usuarioId") Long usuarioId);
+    List<Jogo> buscarPorJogador(@Param("usuarioId") Long usuarioId);
 }

@@ -1,15 +1,19 @@
 package com.rpg.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "RACA")
+@Data @NoArgsConstructor @AllArgsConstructor
 public class Raca {
 
     @Id
@@ -17,31 +21,63 @@ public class Raca {
     @Column(name = "ID_RACA")
     private Long idRaca;
 
+    @Column(name = "NOME")
     private String nome;
+
+    @Column(name = "DESCRICAO")
     private String descricao;
+
+    @Column(name = "ATIVO")
     private Integer ativo;
 
     // ====== FOTO (bytea em PostgreSQL) ======
     @Lob
-    @Basic(fetch = FetchType.LAZY)                 // evita puxar a foto em listagens
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "FOTO", columnDefinition = "bytea")
-    @JsonIgnore                                    // exponha via endpoint próprio
+    @JdbcTypeCode(org.hibernate.type.SqlTypes.BINARY)   // <- igual em Classe.imagem
+    @JsonIgnore
     private byte[] foto;
 
-    @Column(name = "FOTO_MIME", length = 100)      // ex.: image/png, image/jpeg
+    @Column(name = "FOTO_MIME", length = 100)
     private String fotoMime;
 
-    @Column(name = "FOTO_NOME", length = 255)      // nome do arquivo (opcional)
+    @Column(name = "FOTO_NOME", length = 255)
     private String fotoNome;
 
-    @Column(name = "FOTO_TAM")                     // tamanho em bytes (opcional)
+    @Column(name = "FOTO_TAM")
     private Long fotoTam;
 
     @Column(name = "FOTO_ATUALIZADA_EM")
     private Instant fotoAtualizadaEm;
     // ========================================
 
-    public Raca(Long idRaca) {
-        this.idRaca = idRaca;
+    // <<<<<<<<<<<<<< NOVO: habilidades da raça >>>>>>>>>>>>>>
+    @OneToMany(
+            mappedBy = "raca",
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE },
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    @JsonManagedReference("raca-habs")
+    @ToString.Exclude @EqualsAndHashCode.Exclude
+    private List<HabilidadeRaca> habilidades = new ArrayList<>();
+    // =======================================================
+
+    public Raca(Long idRaca) { this.idRaca = idRaca; }
+
+    // Helpers para manter os dois lados sincronizados
+    public void addHabilidade(HabilidadeRaca h) {
+        if (h == null) return;
+        h.setRaca(this);
+        habilidades.add(h);
+    }
+    public void removeHabilidade(Long idHab) {
+        habilidades.removeIf(h -> {
+            if (Objects.equals(h.getId(), idHab)) {
+                h.setRaca(null);
+                return true;
+            }
+            return false;
+        });
     }
 }
