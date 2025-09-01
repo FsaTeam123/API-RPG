@@ -1,5 +1,6 @@
 package com.rpg.port.output;
 
+import com.rpg.core.model.Classe;
 import com.rpg.core.model.ClasseJogo;
 import com.rpg.core.model.ClasseJogoId;
 
@@ -11,4 +12,6 @@ public interface ClasseJogoRepositoryInterface {
     Optional<ClasseJogo> buscarPorId(ClasseJogoId id);
     ClasseJogo salvar(ClasseJogo obj);
     void deletar(ClasseJogoId id);
+
+    List<Classe> buscarClassePorIdJogo(Long idJogo);
 }

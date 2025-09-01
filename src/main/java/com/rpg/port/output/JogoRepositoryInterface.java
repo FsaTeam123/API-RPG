@@ -18,5 +18,5 @@ public interface JogoRepositoryInterface {
 
     List<Jogo> buscarPorMestre(Long id);
 
-    List<String> buscarPorJogador(@Param("usuarioId") Long usuarioId);
+    List<Jogo> buscarPorJogador(@Param("usuarioId") Long usuarioId);
 }

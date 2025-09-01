@@ -20,7 +20,7 @@ public interface JogoControllerInterface {
 
     ResponseEntity<Void> deletar(Long id);
 
-    ResponseEntity<List<String>> buscarPorIddeUsuarioJogador(Long id);
+    ResponseEntity<List<Jogo>> buscarPorIddeUsuarioJogador(Long id);
 
     ResponseEntity<List<Jogo>> buscarPorIddeUsuarioMestre(Long id);
 }

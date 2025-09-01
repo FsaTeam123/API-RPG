@@ -2,7 +2,6 @@ package com.rpg.core.service;
 
 import com.rpg.adapter.out.GeracaoMundoRepository;
 import com.rpg.core.model.GeracaoMundo;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

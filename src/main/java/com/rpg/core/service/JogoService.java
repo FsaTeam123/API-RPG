@@ -36,7 +36,7 @@ public class JogoService {
         return repository.buscarPorMestre(id);
     }
 
-    public List<String> buscarPorIdJogador(Long id) {
+    public List<Jogo> buscarPorIdJogador(Long id) {
         return repository.buscarPorJogador(id);
     }
 }

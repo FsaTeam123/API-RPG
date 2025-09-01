@@ -48,7 +48,7 @@ public class JogoController implements JogoControllerInterface {
 
     @Override
     @GetMapping("/user/jogador/{id}")
-    public ResponseEntity<List<String>> buscarPorIddeUsuarioJogador(@PathVariable Long id) {
+    public ResponseEntity<List<Jogo>> buscarPorIddeUsuarioJogador(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorIdJogador(id));
     }
 

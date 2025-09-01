@@ -160,7 +160,8 @@ public class PlayerController implements PlayerControllerInterface {
                             players.get(i).getJogo().getTema(),
                             null,
                             players.get(i).getJogo().getDataCriacao(),
-                            players.get(i).getJogo().getAtivo()
+                            players.get(i).getJogo().getAtivo(),
+                            players.get(i).getJogo().getPlayerAtivos()
                     )
             );
 
@@ -183,7 +184,8 @@ public class PlayerController implements PlayerControllerInterface {
                             players.get(i).getRaca().getFotoMime(),
                             null,
                             null,
-                            null
+                            null,
+                            players.get(i).getRaca().getHabilidades()
                     )
             );
 
