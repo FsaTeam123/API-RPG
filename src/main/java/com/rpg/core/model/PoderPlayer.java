@@ -25,7 +25,6 @@ public class PoderPlayer {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_PLAYER", nullable = false)
-    @JsonIgnore
     private Player player;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -1,11 +1,17 @@
 package com.rpg.adapter.in;
 
+import com.rpg.adapter.in.dto.PoderPlayerCreateDTO;
+import com.rpg.adapter.in.dto.PoderPlayerResponseDTO;
 import com.rpg.core.model.PoderPlayer;
 import com.rpg.core.service.PoderPlayerService;
 import com.rpg.port.input.PoderPlayerControllerInterface;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -32,21 +38,36 @@ public class PoderPlayerController implements PoderPlayerControllerInterface {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @Override
-    @PostMapping
-    public PoderPlayer criar(@RequestBody PoderPlayer obj) {
-        return service.salvar(obj);
+    /** NOVO: cria vínculo com IDs */
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PoderPlayerResponseDTO> criar(@RequestBody PoderPlayerCreateDTO dto) {
+        try {
+            PoderPlayer salvo = service.criarComIds(dto);
+            PoderPlayerResponseDTO body = new PoderPlayerResponseDTO(
+                    salvo.getIdPoderPlayer(),
+                    salvo.getPlayer().getIdPlayer(),
+                    salvo.getPoder().getIdPoder()
+            );
+            return ResponseEntity.created(URI.create("/poder-player/" + salvo.getIdPoderPlayer())).body(body);
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 409 se já existe (UK)
+        }
     }
 
-    @Override
-    @PutMapping("/{id}")
-    public ResponseEntity<PoderPlayer> atualizar(@PathVariable Long id, @RequestBody PoderPlayer obj) {
-        return service.buscarPorId(id)
-                .map(existing -> {
-                    obj.setIdPoderPlayer(id);
-                    return ResponseEntity.ok(service.salvar(obj));
-                })
-                .orElse(ResponseEntity.notFound().build());
+    /** NOVO: atualiza vínculo com IDs */
+    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PoderPlayerResponseDTO> atualizar(@PathVariable Long id, @RequestBody PoderPlayerCreateDTO dto) {
+        try {
+            PoderPlayer atualizado = service.atualizarComIds(id, dto);
+            PoderPlayerResponseDTO body = new PoderPlayerResponseDTO(
+                    atualizado.getIdPoderPlayer(),
+                    atualizado.getPlayer().getIdPlayer(),
+                    atualizado.getPoder().getIdPoder()
+            );
+            return ResponseEntity.ok(body);
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 409 duplicado
+        }
     }
 
     @Override

@@ -1,7 +1,8 @@
 // com/rpg/core/service/PlayerService.java
 package com.rpg.core.service;
 
-import com.rpg.adapter.out.PlayerRepository;
+import com.rpg.adapter.in.dto.PlayerCreateDTO;
+import com.rpg.adapter.out.*;
 import com.rpg.core.model.Player;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,33 @@ public class PlayerService {
     public record FotoPayload(byte[] bytes, String mime, String nome, Long tamanho) {}
 
     private final PlayerRepository repository;
+    private final UsuarioRepository usuarioRepository;
+    private final JogoRepository jogoRepository;
+    private final OrigemRepository origemRepository;
+    private final RacaRepository racaRepository;
+    private final RiquezaRepository riquezaRepository;
+    private final DivindadeRepository divindadeRepository;
+    private final ClasseRepository classeRepository;
+    private final TamanhoRepository tamanhoRepository;
 
-    public PlayerService(PlayerRepository repository) {
-        this.repository = repository;
+    public PlayerService(PlayerRepository playerRepository,
+                         UsuarioRepository usuarioRepository,
+                         JogoRepository jogoRepository,
+                         OrigemRepository origemRepository,
+                         RacaRepository racaRepository,
+                         RiquezaRepository riquezaRepository,
+                         DivindadeRepository divindadeRepository,
+                         ClasseRepository classeRepository,
+                         TamanhoRepository tamanhoRepository) {
+        this.repository = playerRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.jogoRepository = jogoRepository;
+        this.origemRepository = origemRepository;
+        this.racaRepository = racaRepository;
+        this.riquezaRepository = riquezaRepository;
+        this.divindadeRepository = divindadeRepository;
+        this.classeRepository = classeRepository;
+        this.tamanhoRepository = tamanhoRepository;
     }
 
     @Transactional(readOnly = true)
@@ -31,6 +56,11 @@ public class PlayerService {
     @Transactional(readOnly = true)
     public Optional<Player> buscarPorId(Long id) {
         return repository.buscarPorId(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Player getPorId(Long id) {
+        return repository.getPorId(id);
     }
 
     public Player salvar(Player player) {
@@ -80,6 +110,41 @@ public class PlayerService {
     @Transactional(readOnly = true)
     public List<Player> listarPorJogo(Long idJogo) {
         return repository.listarPorJogo(idJogo);
+    }
+    @Transactional
+    public Player criarAPartirDeIds(PlayerCreateDTO dto) {
+        Player p = new Player();
+
+        // Campos simples
+        p.setNome(dto.nome());
+        p.setForca(dto.forca());
+        p.setDestreza(dto.destreza());
+        p.setSabedoria(dto.sabedoria());
+        p.setConstituicao(dto.constituicao());
+        p.setInteligencia(dto.inteligencia());
+        p.setCarisma(dto.carisma());
+
+        p.setPv(dto.pv());
+        p.setPvMax(dto.pvMax());
+        p.setPvTemp(dto.pvTemp());
+
+        p.setPm(dto.pm());
+        p.setPmMax(dto.pmMax());
+        p.setPmTemp(dto.pmTemp());
+
+        // Relações via "proxy" (não carrega do banco agora):
+        // getReferenceById lança EntityNotFound em flush se o ID não existir;
+        // se quiser validar antecipadamente, use existsById(...) e lance 404.
+        p.setUsuario(usuarioRepository.getReferenceById(dto.idUsuario()));
+        p.setJogo(jogoRepository.getReferenceById(dto.idJogo()));
+        p.setOrigem(origemRepository.getReferenceById(dto.idOrigem()));
+        p.setRaca(racaRepository.getReferenceById(dto.idRaca()));
+        p.setRiqueza(riquezaRepository.getReferenceById(dto.idRiqueza()));
+        p.setDivindade(divindadeRepository.getReferenceById(dto.idDivindade()));
+        p.setClasse(classeRepository.getReferenceById(dto.idClasse()));
+        p.setTamanho(tamanhoRepository.getReferenceById(dto.idTamanho()));
+
+        return repository.save(p);
     }
 
     /* =====

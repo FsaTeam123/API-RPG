@@ -47,7 +47,11 @@ public class SecurityConfig {
                                 "/historia", "/historia/**", "/temas", "/temas/**",
                                 "/jogos/user/mestrado", "/jogos/user/jogador",
                                 "/players", "/players/**", "/ws/**",
-                                "/racas", "/racas/**").permitAll()
+                                "/racas", "/racas/**", "/origens", "/origens/**",
+                                "/divindades", "/divindades/**", "/armas", "/armas**",
+                                "/magias","/magias/**", "/poderes","/poderes/**",
+                                "/pericias","/pericias/**","/poder-player","/poder-player/**",
+                                "/pericia-player","/pericia-player/**","/magia-player","/magia-player/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

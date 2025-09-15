@@ -7,7 +7,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoriaItem {
+public class    CategoriaItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

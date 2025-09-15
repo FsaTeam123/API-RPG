@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -30,19 +32,19 @@ public class Player {
     private String nome;
 
     // ====== FOTO (bytea em PostgreSQL) ======
-    @Lob
-    @Basic(fetch = FetchType.LAZY)                 // evita puxar a foto em listagens
-    @Column(name = "FOTO", columnDefinition = "bytea")
-    @JsonIgnore                                    // exponha via endpoint próprio
+    @Basic(fetch = FetchType.LAZY)
+    @JdbcTypeCode(SqlTypes.BINARY)               // garante BYTEA (não OID)
+    @Column(name = "FOTO")                       // não precisa columnDefinition
+    @JsonIgnore
     private byte[] foto;
 
-    @Column(name = "FOTO_MIME", length = 100)      // ex.: image/png, image/jpeg
+    @Column(name = "FOTO_MIME", length = 100)
     private String fotoMime;
 
-    @Column(name = "FOTO_NOME", length = 255)      // nome do arquivo (opcional)
+    @Column(name = "FOTO_NOME", length = 255)
     private String fotoNome;
 
-    @Column(name = "FOTO_TAM")                     // tamanho em bytes (opcional)
+    @Column(name = "FOTO_TAM")
     private Long fotoTam;
 
     @Column(name = "FOTO_ATUALIZADA_EM")
