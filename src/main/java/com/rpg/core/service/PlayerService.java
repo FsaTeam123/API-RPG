@@ -3,6 +3,7 @@ package com.rpg.core.service;
 
 import com.rpg.adapter.in.dto.PlayerCreateDTO;
 import com.rpg.adapter.out.*;
+import com.rpg.core.model.Jogo;
 import com.rpg.core.model.Player;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -143,6 +144,9 @@ public class PlayerService {
         p.setDivindade(divindadeRepository.getReferenceById(dto.idDivindade()));
         p.setClasse(classeRepository.getReferenceById(dto.idClasse()));
         p.setTamanho(tamanhoRepository.getReferenceById(dto.idTamanho()));
+
+        Jogo newJogo = new Jogo(p.getJogo().getIdJogo());
+        jogoRepository.atualizaNumeroDeParticipantes(newJogo);
 
         return repository.save(p);
     }

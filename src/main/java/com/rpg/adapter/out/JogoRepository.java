@@ -43,4 +43,17 @@ public interface JogoRepository extends JpaRepository<Jogo, Long>, JogoRepositor
            	titulo
     """, nativeQuery = true)
     List<Jogo> buscarPorJogador(@Param("usuarioId") Long usuarioId);
+
+    @Modifying
+    @Query("""
+        update Jogo j
+           set j.playerAtivos = COALESCE(j.playerAtivos, 0) + 1
+         where j.id = :jogoId
+    """)
+    void incrementaParticipantes(@Param("jogoId") Long jogoId);
+
+    @Override
+    default void atualizaNumeroDeParticipantes(Jogo jogo) {
+        incrementaParticipantes(jogo.getIdJogo());
+    }
 }
