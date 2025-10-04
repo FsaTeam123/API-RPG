@@ -19,4 +19,6 @@ public interface JogoRepositoryInterface {
     List<Jogo> buscarPorMestre(Long id);
 
     List<Jogo> buscarPorJogador(@Param("usuarioId") Long usuarioId);
+
+    void atualizaNumeroDeParticipantes(Jogo jogo);
 }
