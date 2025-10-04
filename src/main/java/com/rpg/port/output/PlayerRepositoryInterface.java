@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface PlayerRepositoryInterface {
     List<Player> listarTodos();
     Optional<Player> buscarPorId(Long id);
+    Player getPorId(Long id);
     Player salvar(Player player);
     void deletar(Long id);
 

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/players")
@@ -34,10 +35,15 @@ public class PlayerController implements PlayerControllerInterface {
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<Player> buscarPorId(@PathVariable Long id) {
-        return service.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Player buscarPorId(@PathVariable Long id) {
+        Player player = service.getPorId(id);
+        List<Player> players = new ArrayList<Player>();
+
+        players.add(player);
+
+        players =  toPlayer(players);
+
+        return players.get(0);
     }
 
     @Override
@@ -49,9 +55,28 @@ public class PlayerController implements PlayerControllerInterface {
     }
 
     @Override
-    @PostMapping
-    public Player criar(@RequestBody @Valid Player player) {
-        return service.salvar(player);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PlayerResponseDTO> criar(@RequestBody @Valid PlayerCreateDTO dto) {
+        Player salvo = service.criarAPartirDeIds(dto);
+        PlayerResponseDTO body = new PlayerResponseDTO(
+                salvo.getIdPlayer(),
+                salvo.getNome(),
+                salvo.getForca(), salvo.getDestreza(), salvo.getSabedoria(), salvo.getConstituicao(), salvo.getInteligencia(), salvo.getCarisma(),
+                salvo.getPv(), salvo.getPvMax(), salvo.getPvTemp(),
+                salvo.getPm(), salvo.getPmMax(), salvo.getPmTemp(),
+                salvo.getUsuario().getIdUsuario(),
+                salvo.getJogo().getIdJogo(),
+                salvo.getOrigem().getIdOrigem(),
+                salvo.getRaca().getIdRaca(),
+                salvo.getRiqueza().getIdRiqueza(),
+                salvo.getDivindade().getIdDivindade(),
+                salvo.getClasse().getIdClasse(),
+                salvo.getTamanho().getIdTamanho()
+        );
+
+        return ResponseEntity
+                .created(URI.create("/players/" + salvo.getIdPlayer()))
+                .body(body);
     }
 
     @Override
@@ -170,7 +195,10 @@ public class PlayerController implements PlayerControllerInterface {
                             players.get(i).getOrigem().getIdOrigem(),
                             players.get(i).getOrigem().getNome(),
                             players.get(i).getOrigem().getDescricao(),
-                            players.get(i).getOrigem().getAtivo()
+                            players.get(i).getOrigem().getAtivo(),
+                            players.get(i).getOrigem().getImagem(),
+                            players.get(i).getOrigem().getImagemContentType(),
+                            players.get(i).getOrigem().getImagemFilename()
                     )
             );
 
@@ -203,7 +231,10 @@ public class PlayerController implements PlayerControllerInterface {
                             players.get(i).getDivindade().getIdDivindade(),
                             players.get(i).getDivindade().getNome(),
                             players.get(i).getDivindade().getDescricao(),
-                            players.get(i).getDivindade().getAtivo()
+                            players.get(i).getDivindade().getAtivo(),
+                            players.get(i).getDivindade().getImagem(),
+                            players.get(i).getDivindade().getImagemContentType(),
+                            players.get(i).getDivindade().getImagemFilename()
                     )
             );
 

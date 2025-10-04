@@ -1,3 +1,4 @@
+// com/rpg/adapter/out/MagiaPlayerRepository.java
 package com.rpg.adapter.out;
 
 import com.rpg.core.model.MagiaPlayer;
@@ -11,23 +12,13 @@ import java.util.Optional;
 @Repository
 public interface MagiaPlayerRepository extends JpaRepository<MagiaPlayer, Long>, MagiaPlayerRepositoryInterface {
 
-    @Override
-    default List<MagiaPlayer> listarTodos() {
-        return findAll();
-    }
+    boolean existsByPlayer_IdPlayerAndMagia_IdMagia(Long playerId, Long magiaId);
 
-    @Override
-    default Optional<MagiaPlayer> buscarPorId(Long id) {
-        return findById(id);
-    }
+    List<MagiaPlayer> findAllByPlayer_IdPlayer(Long playerId);
+    List<MagiaPlayer> findAllByMagia_IdMagia(Long magiaId);
 
-    @Override
-    default MagiaPlayer salvar(MagiaPlayer obj) {
-        return save(obj);
-    }
-
-    @Override
-    default void deletar(Long id) {
-        deleteById(id);
-    }
+    @Override default List<MagiaPlayer> listarTodos() { return findAll(); }
+    @Override default Optional<MagiaPlayer> buscarPorId(Long id) { return findById(id); }
+    @Override default MagiaPlayer salvar(MagiaPlayer obj) { return save(obj); }
+    @Override default void deletar(Long id) { deleteById(id); }
 }

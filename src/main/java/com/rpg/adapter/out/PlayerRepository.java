@@ -22,6 +22,9 @@ public interface PlayerRepository extends JpaRepository<Player, Long>, PlayerRep
     default Optional<Player> buscarPorId(Long id) { return findById(id); }
 
     @Override
+    default Player getPorId(Long id) { return getReferenceById(id); }
+
+    @Override
     default Player salvar(Player player) { return save(player); }
 
     @Override

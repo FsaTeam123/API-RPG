@@ -1,5 +1,7 @@
 package com.rpg.port.input;
 
+import com.rpg.adapter.in.dto.PlayerCreateDTO;
+import com.rpg.adapter.in.dto.PlayerResponseDTO;
 import com.rpg.core.model.Player;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,9 +13,9 @@ public interface PlayerControllerInterface {
 
     List<Player> listarTodos();
 
-    ResponseEntity<Player> buscarPorId(Long id);
+    Player buscarPorId(Long id);
 
-    Player criar(Player player);
+    ResponseEntity<PlayerResponseDTO> criar(PlayerCreateDTO dto);
 
     ResponseEntity<Player> atualizar(Long id, Player player);
 
