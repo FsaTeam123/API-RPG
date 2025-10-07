@@ -1,12 +1,13 @@
 package com.rpg.core.model;
 
-import lombok.*;
+import lombok.Data;
+import java.time.Instant;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ChatMessage {
-    private String sender;
-    private String content;
-    private String timestamp;
+    private Long senderId;
+    private String senderNick;
+    private String text;
+    private Instant ts;     // servidor pode preencher se vier nulo
+    private String scope;   // opcional: "geral", "mapas", "personagens"...
 }

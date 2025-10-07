@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class ChatService implements ChatUseCase {
     @Override
     public void handleMessage(ChatMessage message) {
-        System.out.println("Mensagem recebida: " + message.getContent());
+        System.out.println("Mensagem recebida: " + message.getText());
         // Aqui você pode armazenar a mensagem, disparar evento, etc.
     }
 }
