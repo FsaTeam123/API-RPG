@@ -13,6 +13,12 @@ import org.springframework.web.client.RestClient;
 
 import java.security.Principal;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,6 +31,9 @@ public class ChatController {
             .build();
 
     private final ObjectMapper mapper = new ObjectMapper();
+
+    private static final Pattern DICE_CMD =
+            Pattern.compile("(?i)/dado\\s+(\\d{1,3})d(\\d{1,4})\\b");
 
     // Cliente envia para /app/chat.{chatId}.message
     // Servidor publica em /topic/chat.{chatId}
@@ -84,6 +93,43 @@ public class ChatController {
                 messaging.convertAndSend("/topic/chat." + chatId, err);
             }
         }
+
+        // ---------------------- COMANDO /dado ----------------------
+        Matcher dice = DICE_CMD.matcher(text);
+        if (dice.find()) {
+            int n = Integer.parseInt(dice.group(1));      // N
+            int faces = Integer.parseInt(dice.group(2));  // M
+
+            // limites de segurança para não abusar do servidor
+            n = Math.min(Math.max(n, 1), 100);            // 1..100
+            faces = Math.min(Math.max(faces, 1), 10000);  // 1..10000
+
+            List<Integer> rolls = new ArrayList<>(n);
+            ThreadLocalRandom rng = ThreadLocalRandom.current();
+
+            // sua regra: 0..M (inclusive)
+            for (int i = 0; i < n; i++) {
+                int v = rng.nextInt(0, faces + 1); // 0..faces
+                rolls.add(v);
+            }
+
+            int total = rolls.stream().mapToInt(Integer::intValue).sum();
+            String expr = rolls.stream().map(String::valueOf).collect(Collectors.joining(" + "));
+            String pretty = (n == 1)
+                    ? String.format("%s", expr)
+                    : String.format("%s = %d", expr, total);
+
+            ChatMessage result = new ChatMessage();
+            result.setSenderId(message.getSenderId());           // mostra como o próprio remetente
+            result.setSenderNick(message.getSenderNick());
+            result.setScope(message.getScope());
+            result.setTs(Instant.now());
+            result.setText(String.format("🎲 %s rolou %dd%d: %s",
+                    safe(message.getSenderNick()), n, faces, pretty));
+
+            messaging.convertAndSend("/topic/chat." + chatId, result);
+        }
+// -------------------- FIM /dado ----------------------------
     }
 
     private String safe(String s){ return s == null ? "" : s; }
