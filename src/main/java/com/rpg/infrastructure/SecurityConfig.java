@@ -51,7 +51,8 @@ public class SecurityConfig {
                                 "/divindades", "/divindades/**", "/armas", "/armas**",
                                 "/magias","/magias/**", "/poderes","/poderes/**",
                                 "/pericias","/pericias/**","/poder-player","/poder-player/**",
-                                "/pericia-player","/pericia-player/**","/magia-player","/magia-player/**").permitAll()
+                                "/pericia-player","/pericia-player/**","/magia-player","/magia-player/**",
+                                "/anotacao", "/anotacao/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
