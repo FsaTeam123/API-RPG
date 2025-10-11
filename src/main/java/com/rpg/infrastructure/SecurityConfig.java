@@ -52,7 +52,7 @@ public class SecurityConfig {
                                 "/magias","/magias/**", "/poderes","/poderes/**",
                                 "/pericias","/pericias/**","/poder-player","/poder-player/**",
                                 "/pericia-player","/pericia-player/**","/magia-player","/magia-player/**",
-                                "/anotacao", "/anotacao/**").permitAll()
+                                "/anotacao", "/anotacao/**", "/mapas", "/mapas/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
