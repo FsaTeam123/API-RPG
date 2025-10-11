@@ -1,5 +1,6 @@
 package com.rpg.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +25,12 @@ public class Mapa {
     private Integer ativo;
 
     @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @JsonIgnore // evita serializar a imagem em listar/buscar
     private byte[] imagem;
+
+    // opcional, para responder o Content-Type correto ao baixar
+    private String imagemContentType;
 
     public Mapa(Long idMapa) {
         this.idMapa = idMapa;
