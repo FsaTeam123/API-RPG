@@ -42,6 +42,7 @@ public class ChatController {
                                   ChatMessage message,
                                   Principal principal) {
 
+        System.out.println(message.toString());
         if (message.getTs() == null) message.setTs(Instant.now());
 
         // 1) retransmite a mensagem original
