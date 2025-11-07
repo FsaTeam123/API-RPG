@@ -43,7 +43,9 @@ public class ChatController {
                                   Principal principal) {
 
         System.out.println(message.toString());
+        System.out.println(chatId);
         if (message.getTs() == null) message.setTs(Instant.now());
+        System.out.println(message.getTs());
 
         // 1) retransmite a mensagem original
         messaging.convertAndSend("/topic/chat." + chatId, message);
