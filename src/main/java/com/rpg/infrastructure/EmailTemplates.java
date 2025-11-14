@@ -22,7 +22,7 @@ public final class EmailTemplates {
                        style="max-width:560px;background:#16151a;border-radius:16px;box-shadow:0 6px 24px rgba(0,0,0,.4);">
                   <tr>
                     <td style="padding:28px 28px 0 28px;" align="center">
-                      <div style="font-size:20px;letter-spacing:.5px;color:#d4d4d8;">Reinos Perdidos</div>
+                      <div style="font-size:20px;letter-spacing:.5px;color:#d4d4d8;">CODEX RPG</div>
                       <div style="font-size:28px;margin-top:4px;color:#fff;font-weight:bold;">Seu código de verificação</div>
                     </td>
                   </tr>
@@ -52,7 +52,7 @@ public final class EmailTemplates {
                   </tr>
                   <tr>
                     <td align="center" style="padding:0 28px 28px 28px;color:#71717a;font-size:12px;">
-                      © %s • Reinos Perdidos — Todos os direitos reservados
+                      © %s • CODEX RPG — Todos os direitos reservados
                     </td>
                   </tr>
                 </table>
