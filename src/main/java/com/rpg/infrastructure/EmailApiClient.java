@@ -11,7 +11,7 @@ public class EmailApiClient {
     private final WebClient webClient;
 
     public EmailApiClient(
-            @Value("${mail.api.base-url:http://localhost:8080}") String baseUrl,
+            @Value("${mail.api.base-url:http://18.231.189.7:8080}") String baseUrl,
             WebClient.Builder builder
     ) {
         this.webClient = builder.baseUrl(baseUrl).build();
