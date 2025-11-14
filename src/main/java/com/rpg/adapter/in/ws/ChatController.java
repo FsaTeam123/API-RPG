@@ -27,7 +27,7 @@ public class ChatController {
 
     // REST client para o agente
     private final RestClient agenteClient = RestClient.builder()
-            .baseUrl("https://t7tsd4gbsd.execute-api.sa-east-1.amazonaws.com")
+            .baseUrl("http://18.231.189.7:5001")
             .build();
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -63,8 +63,8 @@ public class ChatController {
                 // Chamada GET: /agente/consulta?pergunta=...
                 String json = agenteClient.get()
                         .uri(uriBuilder -> uriBuilder
-                                .path("/agente/consulta")
-                                .queryParam("pergunta", perguntaFinal)
+                                .path("/consultar")
+                                    .queryParam("pergunta", perguntaFinal)
                                 .build())
                         // se seu API exigir chave/headers, descomente e ajuste:
                         //.header("x-api-key", "SUA_CHAVE_AQUI")
